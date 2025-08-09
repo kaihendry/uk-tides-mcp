@@ -551,7 +551,6 @@ wheels = [
 
 [[package]]
 name = "uk-tides-mcp"
-version = "0.6.0"
 source = { editable = "." }
 dependencies = [
     { name = "httpx" },

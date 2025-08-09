@@ -13,3 +13,4 @@ jobs:
           npx -y @modelcontextprotocol/inspector --cli --method tools/list -- uv run uk-tides-mcp
         env:
           UKHO_API_KEY: ${{ secrets.UKHO_API_KEY }}
+      - run: uv publish
