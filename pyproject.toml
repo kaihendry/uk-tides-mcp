@@ -1,6 +1,6 @@
 [project]
 name = "uk-tides-mcp"
-version = "0.2.0"
+version = "0.5.0"
 description = "Model Context Protocol (MCP) server for UK low & high beach tides"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -13,4 +13,14 @@ license = "MIT"
 authors = [{name = "Kai Hendry" }]
 
 [project.scripts]
-uk-tides-mcp = "tides:main"
+uk-tides-mcp = "uk_tides_mcp.tides:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"uk_tides_mcp" = ["stations.json"]
+
+[build-system]
+requires = [ "hatchling",]
+build-backend = "hatchling.build"

@@ -1,1 +1,4 @@
 .envrc
+*.pyc
+.mcp.json
+uk_tides_mcp.egg-info/
