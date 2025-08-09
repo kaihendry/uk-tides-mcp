@@ -7,7 +7,7 @@ on:
         description: Version bump type
         required: true
         type: choice
-        options: [none, micro, minor, major]
+        options: [none, minor, major]
 
 jobs:
   release:
