@@ -7,3 +7,9 @@ clean:
 .PHONY: debug
 debug:
 	npx @modelcontextprotocol/inspector -e UKHO_API_KEY=$(UKHO_API_KEY)
+
+# https://docs.astral.sh/uv/guides/package/#publishing-your-package
+release: # relies on UV_PUBLISH_TOKEN being set 
+	uv version --bump minor
+	uv build
+	uv publish
