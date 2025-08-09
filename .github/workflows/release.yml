@@ -1,0 +1,67 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump-version:
+        description: Version bump type
+        required: true
+        type: choice
+        options: [none, micro, minor, major]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    environment:
+      name: pypi
+      url: https://pypi.org/project/uk-tides-mcp/
+
+    permissions:
+      id-token: write
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Bump version
+        run: |
+          version=$(uv version --bump ${{ inputs.bump-version }} --short)
+          uv lock
+          git config user.name ${{ github.actor }}
+          git config user.email ${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com
+          git commit -am "Bump version to $version"
+          git push
+        if: inputs.bump-version != 'none'
+
+      - name: Build wheel
+        run: uv build
+
+      - name: Get package version information
+        id: version-info
+        run: |
+          version=$(uvx wheel-version dist/*.whl)
+          echo "version=$version" >>$GITHUB_OUTPUT
+          if ! uvx wheel-version --dev dist/*.whl; then
+            echo "tag=$version" >>$GITHUB_OUTPUT
+            if uvx wheel-version --pre dist/*.whl; then
+              echo prerelease=yes >>$GITHUB_OUTPUT
+            fi
+          fi
+
+      - name: Create tag
+        run: |
+          git tag ${{ steps.version-info.outputs.tag }}
+          git push origin tag ${{ steps.version-info.outputs.tag }}
+        if: steps.version-info.outputs.tag
+
+      - name: Publish to PyPI
+        run: uv publish
+
+      - name: Create release
+        run: gh release create ${{ steps.version-info.outputs.tag }} ./dist/* --verify-tag --generate-notes ${{ steps.version-info.outputs.prerelease && '--prerelease' || '' }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        if: steps.version-info.outputs.tag
