@@ -3,16 +3,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  inspect:
+  prompt:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/ruff-action@v3
-      - uses: astral-sh/setup-uv@v6
-      - run: |
-          claude mcp add uktides -s project -e UKHO_API_KEY=$UKHO_API_KEY -- uvx uk-tides-mcp
-        env:
-          UKHO_API_KEY: ${{ secrets.UKHO_API_KEY }}
       - name: Run Claude Code
         uses: anthropics/claude-code-base-action@beta
         with:
@@ -21,3 +14,16 @@ jobs:
             DEBUG: true
           allowed_tools: "*"
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          mcp_config: |
+            {
+              "mcpServers": {
+                "uktides": {
+                  "type": "stdio",
+                  "command": "uvx",
+                  "args": ["uk-tides-mcp"],
+                  "env": {
+                    "UKHO_API_KEY": "${{ secrets.UKHO_API_KEY }}"
+                  }
+                }
+              }
+            }
