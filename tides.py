@@ -215,7 +215,12 @@ async def get_tidal_times(name: str) -> str:
         return f"Failed to parse the tidal data: {str(e)}. The structure might have changed or the location is invalid."
 
 
+def main():
+    """Main entry point for the MCP server."""
+    logger.info("Starting UK Tides MCP Server")
+    mcp.run(transport="stdio")
+
+
 if __name__ == "__main__":
     # Initialize and run the server
-    logger.info("Starting UK Weather MCP Server")
-    mcp.run(transport="stdio")
+    main()

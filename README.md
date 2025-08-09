@@ -1,6 +1,6 @@
 # UK tide times MCP
 
-Signup here: https://admiraltyapi.developer.azure-api.net/
+Signup for $UKHO_API_KEY here: https://admiraltyapi.developer.azure-api.net/
 
 UK Tidal API - Discovery is free for a year
 
