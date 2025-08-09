@@ -6,6 +6,7 @@ jobs:
   prompt:
     runs-on: ubuntu-latest
     steps:
+      - uses: astral-sh/setup-uv@v6
       - name: Run Claude Code
         uses: anthropics/claude-code-base-action@beta
         with:
