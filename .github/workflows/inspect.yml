@@ -10,6 +10,6 @@ jobs:
       - uses: astral-sh/ruff-action@v3
       - uses: astral-sh/setup-uv@v6
       - run: |
-          npx -y @modelcontextprotocol/inspector --cli --method tools/list -- uv run tides.py
+          npx -y @modelcontextprotocol/inspector --cli --method tools/list -- uv run uk-tides-mcp
         env:
           UKHO_API_KEY: ${{ secrets.UKHO_API_KEY }}
